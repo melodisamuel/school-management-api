@@ -55,6 +55,7 @@ module.exports = class ManagersLoader {
         this.validators           = validatorsLoader.load();
         this.resourceNodes        = resourceMeshLoader.load();
         this.mongomodels          = mongoLoader.load();
+        this.injectable.mongomodels = this.mongomodels;
 
     }
 
