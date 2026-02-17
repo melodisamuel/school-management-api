@@ -22,6 +22,7 @@ module.exports = {
         type: 'string',
         length: {min:3, max: 100},
     },
+    
     title: {
         path: 'title',
         type: 'string',
@@ -96,10 +97,41 @@ module.exports = {
             length: { min: 3, max: 100}
         }
     },
+    
     obj: {
         type: 'Object',
     },
     bool: {
         type: 'Boolean',
     },
+    name: {
+        path: 'name',
+        type: 'string',
+        length: { min: 2, max: 100 },
+    },
+    address: {
+        path: 'address',
+        type: 'string',
+        length: { min: 5, max: 200 },
+    },
+    capacity: {
+        path: 'capacity',
+        type: 'number',
+    },
+    // We use this for linking Students/Classrooms to Schools
+    schoolId: {
+        path: 'schoolId',
+        type: 'string',
+        length: { min: 24, max: 24 }, // Typical MongoDB ObjectId length
+    },
+    classroomId: {
+        path: 'classroomId',
+        type: 'string',
+        length: { min: 24, max: 24 },
+    },
+    role: {
+        path: 'role',
+        type: 'string',
+        oneOf: ['superadmin', 'school_admin'],
+    }
 }

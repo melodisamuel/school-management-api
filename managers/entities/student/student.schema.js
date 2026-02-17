@@ -1,19 +1,15 @@
 module.exports = {
     createStudent: [
         {
-            model: 'firstName',
+            model: 'name', // Points to the 'name' definition in schema.models.js
             required: true,
         },
         {
-            model: 'lastName',
+            model: 'email', // Points to the 'email' regex in schema.models.js
             required: true,
         },
         {
-            model: 'email',
-            required: true,
-        },
-        {
-            model: 'classroomId',
+            model: 'schoolId',
             required: true,
         },
     ],
