@@ -1,6 +1,7 @@
 const StudentManager = require('../managers/entities/student/Student.manager');
 const SchoolManager  = require('../managers/entities/school/School.manager');
 const ClassroomManager = require('../managers/entities/classroom/Classroom.manager');
+const MongoLoader = require('./MongoLoader');
 const MiddlewaresLoader     = require('./MiddlewaresLoader');
 const ApiHandler            = require("../managers/api/Api.manager");
 const LiveDB                = require('../managers/live_db/LiveDb.manager');
@@ -28,7 +29,7 @@ module.exports = class ManagersLoader {
         this.cache      = cache;
         this.cortex     = cortex;
         
-        this._preload();
+        // Define injectable 
         this.injectable = {
             utils,
             cache, 
@@ -37,11 +38,9 @@ module.exports = class ManagersLoader {
             oyster,
             aeon,
             managers: this.managers, 
-            validators: this.validators,
-            mongomodels: this.mongomodels,
-            resourceNodes: this.resourceNodes,
         };
         
+        this._preload();
     }
 
     _preload(){
@@ -55,8 +54,11 @@ module.exports = class ManagersLoader {
         this.validators           = validatorsLoader.load();
         this.resourceNodes        = resourceMeshLoader.load();
         this.mongomodels          = mongoLoader.load();
-        this.injectable.mongomodels = this.mongomodels;
 
+        
+        this.injectable.validators = this.validators;
+        this.injectable.resourceNodes = this.resourceNodes;
+        this.injectable.mongomodels = this.mongomodels;
     }
 
     load() {
