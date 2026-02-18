@@ -10,7 +10,7 @@ module.exports = {
         },
         {
             model: 'schoolId',
-            required: true,
+            required: false, // Change to false so the Manager can inject it
         }
     ],
 }

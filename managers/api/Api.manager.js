@@ -154,7 +154,6 @@ module.exports = class ApiHandler {
             let result = await this._exec({targetModule: this.managers[moduleName], fnName, data: {
                 ...body, 
                 ...results,
-                res,
             }});
             if(!result)result={}
 

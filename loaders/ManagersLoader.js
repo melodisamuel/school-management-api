@@ -1,6 +1,7 @@
 const StudentManager = require('../managers/entities/student/Student.manager');
 const SchoolManager  = require('../managers/entities/school/School.manager');
 const ClassroomManager = require('../managers/entities/classroom/Classroom.manager');
+const UserManager = require('../managers/entities/user/User.manager');
 const MongoLoader = require('./MongoLoader');
 const MiddlewaresLoader     = require('./MiddlewaresLoader');
 const ApiHandler            = require("../managers/api/Api.manager");
@@ -68,24 +69,24 @@ module.exports = class ManagersLoader {
         const mwsRepo                     = middlewaresLoader.load();
         const { layers, actions }         = systemArch;
         this.injectable.mwsRepo           = mwsRepo;
+
         /*****************************************CUSTOM MANAGERS*****************************************/
         this.managers.shark               = new SharkFin({ ...this.injectable, layers, actions });
         this.managers.timeMachine         = new TimeMachine(this.injectable);
         this.managers.token               = new TokenManager(this.injectable);
-        this.managers.shark               = new SharkFin({ ...this.injectable, layers, actions });
-        this.managers.timeMachine         = new TimeMachine(this.injectable);
-        this.managers.token               = new TokenManager(this.injectable);
+        // REMOVED: Duplicate instantiations of shark, timeMachine, and token were here
         /*************************************************************************************************/
+        
+        this.managers.user                = new UserManager(this.injectable);
         this.managers.school              = new SchoolManager(this.injectable);
         this.managers.classroom           = new ClassroomManager(this.injectable);
         this.managers.student             = new StudentManager(this.injectable);
-        this.managers.mwsExec             = new VirtualStack({ ...{ preStack: [/* '__token', */'__device',] }, ...this.injectable });
+        
+        this.managers.mwsExec             = new VirtualStack({ ...{ preStack: ['__device'] }, ...this.injectable });
         this.managers.userApi             = new ApiHandler({...this.injectable,...{prop:'httpExposed'}});
         this.managers.userServer          = new UserServer({ config: this.config, managers: this.managers });
 
-       
         return this.managers;
-
     }
 
 }

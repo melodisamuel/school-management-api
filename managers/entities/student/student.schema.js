@@ -1,16 +1,11 @@
 module.exports = {
-    createStudent: [
-        {
-            model: 'name', // Points to the 'name' definition in schema.models.js
-            required: true,
-        },
-        {
-            model: 'email', // Points to the 'email' regex in schema.models.js
-            required: true,
-        },
-        {
-            model: 'schoolId',
-            required: true,
-        },
+    enrollStudent: [
+        { model: 'name', required: true },
+        { model: 'email', required: true },
+        { model: 'classroomId', required: true }
     ],
+    transferStudent: [
+        { model: 'studentId', required: true },
+        { model: 'newClassroomId', required: true }
+    ]
 }

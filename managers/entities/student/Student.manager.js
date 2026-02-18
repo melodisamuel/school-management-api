@@ -1,49 +1,58 @@
-module.exports = class Student { 
-
-    constructor({utils, cache, config, cortex, managers, validators, mongomodels }={}){
-        this.config              = config;
-        this.validators          = validators; 
-        this.mongomodels         = mongomodels;
-        this.studentsCollection  = "students";
-        // This makes the methods accessible via the API
-        this.studentExposed      = ['createStudent', 'getStudents'];
+module.exports = class Student {
+    constructor({ managers, validators, mongomodels } = {}) {
+        this.validators = validators;
+        this.mongomodels = mongomodels;
+        this.httpExposed = [
+            'enrollStudent',
+            'put=transferStudent',
+            'get=getStudentProfile',
+            'get=listStudents'
+        ];
     }
 
-    async createStudent({__user, firstName, lastName, email, classroomId}){
-        const student = {firstName, lastName, email, classroomId};
+    /** Managed by school administrators [cite: 27] */
+    async enrollStudent({ __user, name, email, classroomId }) {
+        if (!['school_admin', 'superadmin'].includes(__user.role)) {
+            return { ok: false, code: 403, message: "Unauthorized" };
+        }
 
-        // 1. Validation
-        let result = await this.validators.student.createStudent(student);
-        if(result) return result;
-        
+        const classroom = await this.mongomodels.classroom.findById(classroomId);
+        if (!classroom) return { ok: false, code: 404, message: "Classroom not found" }; 
 
-        // 2. Grab schoolId from the logged-in user (__user)
-        const schoolId = __user.schoolId;
+        // Capacity management 
+        const count = await this.mongomodels.student.countDocuments({ classroomId });
+        if (count >= classroom.capacity) return { ok: false, message: "Classroom capacity reached" }; 
 
-        // 3. Persistence: Save to MongoDB
-        let createdStudent = await this.mongomodels.student.create({
-            ...student,
-            schoolId 
+        const student = await this.mongomodels.student.create({
+            name, email, classroomId, schoolId: __user.schoolId 
         });
-        
-        return {
-            ok: true,
-            data: createdStudent
-        };
+        return { ok: true, data: student };
     }
 
-    async getStudents({ __user }){
-        // 4. RBAC/Security: Only show students belonging to this admin's school
-        let query = { schoolId: __user.schoolId };
-        
-        // Superadmin should be allowed to see everything
-        if(__user.role === 'superadmin') query = {};
-
-        let students = await this.mongomodels.student.find(query);
-        
-        return {
-            ok: true,
-            data: students
-        };
+    /** Enrollment and transfer capabilities  */
+    async transferStudent({ __user, studentId, newClassroomId }) {
+        const student = await this.mongomodels.student.findOneAndUpdate(
+            { _id: studentId, schoolId: __user.schoolId },
+            { classroomId: newClassroomId },
+            { new: true }
+        );
+        return { ok: !!student, data: student };
     }
-}
+
+    /** Student profile management [cite: 29] */
+    async getStudentProfile({ __user, studentId }) {
+        const student = await this.mongomodels.student.findOne({ 
+            _id: studentId, 
+            schoolId: __user.schoolId 
+        });
+        return { ok: !!student, data: student };
+    }
+
+    /** School-specific access [cite: 41] */
+    async listStudents({ __user }) {
+        const students = await this.mongomodels.student.find({ 
+            schoolId: __user.schoolId 
+        });
+        return { ok: true, data: students };
+    }
+};

@@ -1,61 +1,68 @@
 const bcrypt = require('bcrypt');
 
-/**
- * User Manager 
- * Handles user creation and authentication.
- */
 module.exports = class User { 
-
-    constructor({utils, cache, config, cortex, managers, validators, mongomodels }={}){
+    constructor({config, managers, validators, mongomodels }={}){
         this.config              = config;
-        this.cortex              = cortex;
         this.validators          = validators; 
         this.mongomodels         = mongomodels;
         this.tokenManager        = managers.token;
-        this.usersCollection     = "users";
-        // NOTE: Exposing login so it can be reached via /api/user/login
-        this.httpExposed         = ['createUser', 'login']; 
+        this.httpExposed         = ['register', 'login']; 
     }
 
-    async createUser({username, email, password, role, schoolId}){
-        const userData = {username, email, password, role, schoolId};
-
-        // NOTE: Validate input against the user schema
-        let result = await this.validators.user.createUser(userData);
-        if(result) return result;
-        
-        // NOTE: Hash password before saving for security compliance
+    async register(payload) {
+        const { username, email, password, role, schoolId } = payload;
+    
+        console.log("Payload received:", payload);
+        console.log("Validator sees:", payload.email);
+    
+        // Run validation
+        let result = await this.validators.user.register(payload);
+        console.log("Validator result:", result);
+    
+        if (result && result.data && result.data.length) {
+            return { ok: false, errors: result.data };
+        }
+    
+        // Check if email already exists BEFORE inserting
+        let existingUser = await this.mongomodels.user.findOne({ email });
+        if (existingUser) {
+            return { ok: false, errors: [{ label: "Email", message: "Email already exists", log: "_unique" }] };
+        }
+    
         const hashedPassword = await bcrypt.hash(password, 10);
-        
+    
+        // Create user
         let createdUser = await this.mongomodels.user.create({
-            ...userData,
-            password: hashedPassword
+            username,
+            email,
+            password: hashedPassword,
+            role: role || 'school_admin',
+            schoolId: (schoolId && schoolId.length === 24) ? schoolId : null
         });
-
+    
         return {
-            ok: true,
-            data: {
-                username: createdUser.username,
-                email: createdUser.email
-            }
+            username: createdUser.username,
+            email: createdUser.email
         };
     }
+    
 
-    async login({email, password}){
-        // NOTE: Fetch user to verify credentials and retrieve RBAC roles
+    async login({ email, password }) {
         const user = await this.mongomodels.user.findOne({ email });
 
-        if(!user || !(await bcrypt.compare(password, user.password))){
+        console.log("DB User Object:", { role: user.role, schoolId: user.schoolId });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             return { ok: false, code: 401, message: "Invalid email or password" };
         }
-
-        /* Generate JWT */
-        let longToken = this.tokenManager.createLongToken({
-            userId: user._id, 
-            role: user.role,
+    
+        // Add role and schoolId to the token payload 
+        let longToken = this.tokenManager.genLongToken({
+            userId: user._id,
+            userKey: user.email,
+            role: user.role,      
             schoolId: user.schoolId 
         });
-        
+    
         return {
             ok: true,
             data: {
@@ -64,7 +71,8 @@ module.exports = class User {
                     username: user.username,
                     role: user.role
                 }
-            } 
+            }
         };
     }
+    
 }

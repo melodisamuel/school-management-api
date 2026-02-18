@@ -1,4 +1,5 @@
 const loader = require('./_common/fileLoader');
+const RateLimiter = require('../mws/__RateLimiter.mw');
 
 module.exports = class MiddlewareLoader { 
 

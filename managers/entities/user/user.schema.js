@@ -1,24 +1,19 @@
 module.exports = {
-    createUser: [
+    register: [ 
         {
             model: 'username',
+            label: 'Username',
             required: true,
         },
         {
             model: 'email',
+            label: 'Email',
             required: true,
         },
         {
             model: 'password',
+            label: 'Password',
             required: true,
-        },
-        {
-            model: 'role',
-            required: false, // Defaulted in manager if missing
-        },
-        {
-            model: 'schoolId',
-            required: false,
         }
     ],
 }
