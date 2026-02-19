@@ -48,8 +48,8 @@ Run the application:
 
 Bash
 npm start
- Testing with Postman
-Import the collection found in 
+Testing with Postman
+Import the collection and environment found in /tests/School_Management.postman_collection.json.
 
 Register/Login to receive your JWT Bearer Token.
 
