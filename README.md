@@ -41,8 +41,8 @@ Environment Variables:
 Create a .env file (or update config/):
 
 Code snippet
-MONGO_URI=mongodb://localhost:27017/school_management
-REDIS_URL=redis://127.0.0.1:6379
+MONGO_URI=mongodb+srv://melodysamuel126:jMTG1o71Zq9BbZ2e@cluster0.afwrv.mongodb.net/
+REDIS_URL=rediss://default:AeiVAAIncDI4ODg1MmQwYTZkNmE0NTFlYTE4Y2ZlY2NmZTM2MmJiNXAyNTk1NDE@honest-mink-59541.upstash.io:6379
 PREFIX=axion
 Run the application:
 
