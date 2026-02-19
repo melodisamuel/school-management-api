@@ -49,7 +49,7 @@ Run the application:
 Bash
 npm start
  Testing with Postman
-Import the collection found in /tests/School_Management.postman_collection.json.
+Import the collection found in 
 
 Register/Login to receive your JWT Bearer Token.
 

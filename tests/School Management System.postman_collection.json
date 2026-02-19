@@ -1,0 +1,259 @@
+{
+  "info": {
+    "_postman_id": "3cf180e1-e640-4e34-9e8e-154a1b8e1cb5",
+    "name": "School Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "30119290",
+    "_collection_link": "https://go.postman.co/collection/30119290-3cf180e1-e640-4e34-9e8e-154a1b8e1cb5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTk3MWZhZWQ0MDNiZWI4YTM1OGZmZjgiLCJ1c2VyS2V5IjoiYWRtaW45QHNjaG9vbC5jb20iLCJyb2xlIjoic3VwZXJhZG1pbiIsInNjaG9vbElkIjoiNjVkMWYxMjM0NTY3ODkwYWJjZGVmMTIzIiwiaWF0IjoxNzcxNTExNzQ0LCJleHAiOjE4NjYxODQ1NDR9.2tSlXuhNzAjya01V4a3zfxHYotX04Cid74xzZrIn-rY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"super_admin_mel\",\n    \"email\": \"admin@soartalent.com\",\n    \"password\": \"securePassword123\",\n    \"role\": \"superadmin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://school-management-api-pz4t.onrender.com/api/user/login",
+              "protocol": "https",
+              "host": [
+                "school-management-api-pz4t",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "user",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://school-management-api-pz4t.onrender.com/api/user/register",
+              "protocol": "https",
+              "host": [
+                "school-management-api-pz4t",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "user",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "School",
+      "item": [
+        {
+          "name": "Create School",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTk3MWZhZWQ0MDNiZWI4YTM1OGZmZjgiLCJ1c2VyS2V5IjoiYWRtaW45QHNjaG9vbC5jb20iLCJyb2xlIjoic3VwZXJhZG1pbiIsInNjaG9vbElkIjoiNjVkMWYxMjM0NTY3ODkwYWJjZGVmMTIzIiwiaWF0IjoxNzcxNTExNzQ0LCJleHAiOjE4NjYxODQ1NDR9.2tSlXuhNzAjya01V4a3zfxHYotX04Cid74xzZrIn-rY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Soar Excellence Academy\",\n  \"address\": \"101 Innovation Drive, Lagos\",\n  \"phone\": \"+2348012345678\",\n  \"capacity\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://school-management-api-pz4t.onrender.com/api/school/createSchool",
+              "protocol": "https",
+              "host": [
+                "school-management-api-pz4t",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "school",
+                "createSchool"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update School",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTk3MWZhZWQ0MDNiZWI4YTM1OGZmZjgiLCJ1c2VyS2V5IjoiYWRtaW45QHNjaG9vbC5jb20iLCJyb2xlIjoic3VwZXJhZG1pbiIsInNjaG9vbElkIjoiNjVkMWYxMjM0NTY3ODkwYWJjZGVmMTIzIiwiaWF0IjoxNzcxNTExNzQ0LCJleHAiOjE4NjYxODQ1NDR9.2tSlXuhNzAjya01V4a3zfxHYotX04Cid74xzZrIn-rY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Soar Excellence Academy\",\n  \"address\": \"101 Innovation Drive, Lagos\",\n  \"phone\": \"+2348012345678\",\n  \"capacity\": 5\n}"
+            },
+            "url": {
+              "raw": "https://school-management-api-pz4t.onrender.com/api/classroom/updateClassroom",
+              "protocol": "https",
+              "host": [
+                "school-management-api-pz4t",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "classroom",
+                "updateClassroom"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Schools",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Get School",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Delete School",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Classroom",
+      "item": [
+        {
+          "name": "Create Classroom",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Update Capacity",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "List Classrooms",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Classroom",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Student",
+      "item": [
+        {
+          "name": "Enroll Student",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Transfer Student",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "List Students",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Get Student Profile",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
